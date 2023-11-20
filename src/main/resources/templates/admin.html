@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Admin panel</title>
+
+</head>
+<body>
+<div>
+    <table border="1" cellspacing="0" cellpadding="3" style="text-align: center; vertical-align: middle;">
+        <tr>
+            <th>Id</th>
+            <th>Login</th>
+            <th>Name</th>
+            <th>Lastname</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>User management</th>
+        </tr>
+        <tr th:each="user: ${users}">
+            <td th:utext="${user.id}">...</td>
+            <td th:utext="${user.login}">...</td>
+            <td th:utext="${user.name}">...</td>
+            <td th:utext="${user.lastname}">...</td>
+            <td th:utext="${user.email}">...</td>
+            <td th:utext="${user.getRoles()}">...</td>
+            <td>
+                <form method="GET" action="/admin/edit">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <button type="submit">Edit</button>
+                </form>
+                <form method="GET" action="/admin/delete">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<hr/>
+
+<a href="/admin/new">Create new user</a>
+<br>
+<a href="/logout">Logout</a>
+</body>
+</html>
