@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Admin panel</title>
-
 </head>
 <body>
 <div>
@@ -12,6 +11,7 @@
             <th>Login</th>
             <th>Name</th>
             <th>Lastname</th>
+            <th>Age</th>
             <th>Email</th>
             <th>Role</th>
             <th>User management</th>
@@ -21,8 +21,9 @@
             <td th:utext="${user.login}">...</td>
             <td th:utext="${user.name}">...</td>
             <td th:utext="${user.lastname}">...</td>
+            <td th:utext="${user.age}">...</td>
             <td th:utext="${user.email}">...</td>
-            <td th:utext="${user.getRoles()}">...</td>
+            <td th:utext="${user.roles}">...</td>
             <td>
                 <form method="GET" action="/admin/edit">
                     <input type="hidden" name="id" th:value="${user.id}">

@@ -50,7 +50,6 @@ public class AdminController {
     public String createUser(@ModelAttribute("user") @Valid User user,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("Ne srabotalo");
             return "new";
         }
         userService.add(user);
