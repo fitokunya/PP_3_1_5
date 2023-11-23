@@ -19,6 +19,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,7 +35,9 @@ public class AdminController {
     }
 
     @GetMapping
-    public String pageAdmin(Model model) {
+    public String pageAdmin(@ModelAttribute("user") User user, Model model, Principal principal) {
+        user = userService.findByLoginUser(principal.getName());
+        model.addAttribute("user", user);
         model.addAttribute("users", userService.showAllUsers());
         return "admin";
     }
@@ -42,8 +45,8 @@ public class AdminController {
     @GetMapping("/new")
     public String newUser(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.findAll());
-        return "new";
+        model.addAttribute("role", roleService.findAll());
+        return "/new";
     }
 
     @PostMapping("/new")

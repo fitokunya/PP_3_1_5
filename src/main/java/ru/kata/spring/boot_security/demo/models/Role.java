@@ -60,6 +60,10 @@ public class Role {
 
     @Override
     public String toString() {
-        return getRole();
+        if (role.equals("ROLE_ADMIN")) {
+            return "ADMIN";
+        } else {
+            return "USER";
+        }
     }
 }
