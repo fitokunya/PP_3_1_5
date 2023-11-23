@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.service;
+package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -24,12 +25,13 @@ public class MyUserDetailService implements UserDetailsService {
         this.userServiceImpl = userServiceImpl;
     }
 
+    @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         User user = userServiceImpl.findByLoginUser(name);
         if (user == null) {
             throw new UsernameNotFoundException("User " + name + " not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
+        return user;
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {

@@ -85,10 +85,6 @@
                                                         th:data-target="${'#delete' + allUsers.id}">
                                                     Delete
                                                 </button>
-                                                <!--                                                <form method="GET" action="/admin/delete">-->
-                                                <!--                                                    <input type="hidden" name="id" th:value="${allUsers.id}">-->
-                                                <!--                                                    <button class="btn btn-danger" type="submit">Delete</button>-->
-                                                <!--                                                </form>-->
                                             </td>
                                             <!--            Modal edit              -->
                                             <div class="modal fade" th:id="${'edit'+ allUsers.id}" tabindex="-1"
@@ -206,39 +202,43 @@
                                                             <div class="form-group">
                                                                 <b><label for="d_login">Login</label></b>
                                                                 <input name="login" class="form-control" type="text"
-                                                                       th:value="${allUsers.login}" id="d_login">
+                                                                       th:value="${allUsers.login}" id="d_login"
+                                                                       disabled="true">
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <b><label for="d_name">Name</label></b>
                                                                 <input name="name" class="form-control" type="text"
-                                                                       th:value="${allUsers.name}" id="d_name">
+                                                                       th:value="${allUsers.name}" id="d_name"
+                                                                       disabled="true">
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <b><label for="d_lastname">Lastname</label></b>
                                                                 <input name="lastname" class="form-control"
                                                                        type="text" th:value="${allUsers.lastname}"
-                                                                       id="d_lastname">
+                                                                       id="d_lastname" disabled="true">
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <b><label for="d_age">Age</label></b>
                                                                 <input name="age" class="form-control" type="number"
-                                                                       th:value="${allUsers.age}" id="d_age">
+                                                                       th:value="${allUsers.age}" id="d_age"
+                                                                       disabled="true">
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <b><label for="d_email">EMail</label></b>
                                                                 <input name="email" class="form-control" type="text"
-                                                                       th:value="${allUsers.email}" id="d_email">
+                                                                       th:value="${allUsers.email}" id="d_email"
+                                                                       disabled="true">
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <b><label class="control-label">Roles</label></b>
                                                                 <select class="form-control form-control-static"
                                                                         size="2"
-                                                                        multiple="multiple" th:name="roles">
+                                                                        multiple="multiple" th:name="roles" disabled="true">
                                                                     <option selected="selected" value="1">USER
                                                                     </option>
                                                                     <option value="2">ADMIN</option>
@@ -248,7 +248,7 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Close
                                                                 </button>
-                                                                <form method="GET" action="/admin/delete">
+                                                                <form method="POST" action="/admin/delete">
                                                                     <input type="hidden" name="id"
                                                                            th:value="${allUsers.id}">
                                                                     <button type="submit" class="btn btn-danger">

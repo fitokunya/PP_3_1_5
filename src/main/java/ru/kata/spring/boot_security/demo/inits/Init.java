@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.init;
+package ru.kata.spring.boot_security.demo.inits;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.repositorys.RoleRepository;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
@@ -29,21 +29,17 @@ public class Init {
     @PostConstruct
     public void init() {
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         Role roleUser = new Role("ROLE_USER");
         roleRepository.save(roleUser);
 
         Role roleAdmin = new Role("ROLE_ADMIN");
         roleRepository.save(roleAdmin);
 
-        User userUser = new User("user", "user", 23, "user@user.ru", "user",
-                passwordEncoder.encode("user"));
+        User userUser = new User("user", "user", 23, "user@user.ru", "user", "user");
         userUser.setRoles(Collections.singletonList(roleUser));
         userService.add(userUser);
 
-        User userAdmin = new User("admin", "admin", 23, "admin@admin.ru", "admin",
-                passwordEncoder.encode("admin"));
+        User userAdmin = new User("admin", "admin", 23, "admin@admin.ru", "admin", "admin");
         userAdmin.setRoles(Collections.singletonList(roleAdmin));
         userService.add(userAdmin);
     }
