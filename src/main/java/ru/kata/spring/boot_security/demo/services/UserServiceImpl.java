@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.Exceptions.CheckUserIDForYouException;
-import ru.kata.spring.boot_security.demo.Exceptions.NoSuchUserException;
+import ru.kata.spring.boot_security.demo.exceptions.CheckUserIDForYouException;
+import ru.kata.spring.boot_security.demo.exceptions.NoSuchUserException;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositorys.UserRepository;
 
