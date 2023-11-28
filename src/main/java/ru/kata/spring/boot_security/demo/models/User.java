@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,7 +30,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "login")
+    @Column(name = "login", unique = true)
     @Size(min = 3, max = 24, message = "Please write the login in size from 5 to 24 characters")
     private String login;
 
@@ -146,35 +147,39 @@ public class User implements UserDetails {
                 "roles=" + roles +
                 '}';
     }
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
 
-
+    @JsonIgnore
     @Override
     public String getUsername() {
         return login;
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getRoleUserToString() {
+        return (String.valueOf(getRoles()).equals("[ADMIN]") ? "ADMIN" : "USER");
     }
 }

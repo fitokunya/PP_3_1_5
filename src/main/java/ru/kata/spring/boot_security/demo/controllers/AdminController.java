@@ -3,26 +3,24 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
-@Controller
-@RequestMapping("/admin")
+import java.util.List;
+
+@Validated
+@RestController
+@RequestMapping("/api/admin")
 public class AdminController {
 
     private final UserService userService;
@@ -34,48 +32,31 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping
-    public String pageAdmin(@ModelAttribute("user") User user, Model model, Principal principal) {
-        user = userService.findByLoginUser(principal.getName());
-        model.addAttribute("user", user);
-        model.addAttribute("users", userService.showAllUsers());
-        return "admin";
+    @GetMapping()
+    public ResponseEntity<List<User>> pageAdmin() {
+        return new ResponseEntity<>(userService.showAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("user", user);
-        model.addAttribute("role", roleService.findAll());
-        return "/new";
+    @GetMapping("/show")
+    public ResponseEntity<User> getUser(@RequestParam("id") Long id) {
+        return new ResponseEntity<>(userService.show(id), HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public String createUser(@ModelAttribute("user") @Valid User user,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "new";
-        }
+    public ResponseEntity<HttpStatus> add(@Valid @RequestBody User user) {
         userService.add(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/edit")
-    public String edit(@RequestParam(name = "id") Long id, Model model) {
-        model.addAttribute("user", userService.show(id));
-        model.addAttribute("roles", roleService.findAll());
-        return "edit";
-    }
-
-    @PostMapping("/")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam("id") Long id) {
+    @PostMapping("/edit")
+    public ResponseEntity<HttpStatus> update(@Valid @RequestBody User user) {
         userService.update(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") Long id) {
-        userService.delete(id);
-        return "redirect:/admin";
+    public ResponseEntity<HttpStatus> delete(@RequestParam("id") Long id, @AuthenticationPrincipal User user) {
+        userService.delete(id, user);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
-
 }

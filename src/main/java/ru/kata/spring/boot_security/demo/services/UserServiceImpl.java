@@ -2,19 +2,16 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import ru.kata.spring.boot_security.demo.Exceptions.CheckUserIDForYouException;
+import ru.kata.spring.boot_security.demo.Exceptions.NoSuchUserException;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositorys.UserRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 // UPDATE
@@ -52,15 +49,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User show(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User " + id + " found"));
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchUserException("User " + id + " found"));
     }
 
     @Override
     @Transactional
     public void add(User user) {
-        if (checkByLogin(user.getLogin()).isPresent()) {
-            throw new RuntimeException("The user " + user.getLogin() + " already exists");
-        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -68,9 +62,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(User user) {
-        if (checkByLogin(user.getLogin()).isPresent()) {
-            throw new RuntimeException("The user " + user.getLogin() + " already exists");
-        }
         if (!user.getPassword().equals(show(user.getId()).getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
@@ -79,7 +70,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id, User user) {
+        if(id.equals(user.getId())) {
+            throw new CheckUserIDForYouException("You can't delete yourself");
+        }
         if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
         }

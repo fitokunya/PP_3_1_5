@@ -1,8 +1,5 @@
 package ru.kata.spring.boot_security.demo.inits;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Component;
 
 import ru.kata.spring.boot_security.demo.models.Role;

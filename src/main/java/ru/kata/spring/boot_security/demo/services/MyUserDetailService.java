@@ -12,7 +12,6 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 

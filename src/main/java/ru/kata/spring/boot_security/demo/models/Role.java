@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Role implements GrantedAuthority {
         return role;
     }
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 
@@ -68,10 +70,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        if (role.equals("ROLE_ADMIN")) {
-            return "ADMIN";
-        } else {
-            return "USER";
-        }
+        return (role.equals("ROLE_ADMIN")) ? "ADMIN" : "USER";
     }
 }
