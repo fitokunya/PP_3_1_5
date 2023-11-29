@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.validation.annotation.Validated;
@@ -33,28 +34,33 @@ public class AdminController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> pageAdmin() {
         return new ResponseEntity<>(userService.showAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/show")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUser(@RequestParam("id") Long id) {
         return new ResponseEntity<>(userService.show(id), HttpStatus.OK);
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> add(@Valid @RequestBody User user) {
         userService.add(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/edit")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> update(@Valid @RequestBody User user) {
         userService.update(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> delete(@RequestParam("id") Long id, @AuthenticationPrincipal User user) {
         userService.delete(id, user);
         return ResponseEntity.ok(HttpStatus.OK);

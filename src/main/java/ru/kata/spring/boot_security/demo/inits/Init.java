@@ -23,6 +23,7 @@ public class Init {
         this.roleRepository = roleRepository;
     }
 
+
     @PostConstruct
     public void init() {
 

@@ -87,7 +87,7 @@ function deleteModal(id) {
 formDeleteUser.addEventListener("submit", deleteUser => {
     deleteUser.preventDefault()
     fetch("http://localhost:8088/api/admin/delete?id=" + formDeleteUser.d_id.value, {
-        method: "POST"
+        method: "DELETE"
     })
     .then(() => {
         adminPage();
@@ -119,7 +119,7 @@ formEditUser.addEventListener("submit", editUser => {
         })
     }
     fetch("http://localhost:8088/api/admin/edit?id=" + formEditUser.e_id.value, {
-        method: "POST",
+        method: "PUT",
         headers: {
             "Content-Type": "application/json"
         },
